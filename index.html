@@ -3,178 +3,248 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Comparison Dynamics Help | NostraData</title>
+<title>API - Comparison Dynamics | Help</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --navy: #12324A;
-    --ink: #1C2830;
-    --muted: #5B6B76;
-    --paper: #F5F7F8;
-    --line: #D8E0E5;
-    --grow: #2E7D5B;
-    --fall: #B5473A;
-    --store: #12324A;
-    --nat: #7C8C96;
-    --cohort: #3E7FA6;
+    --bar: #1A8CD3;        /* report panel header blue */
+    --select: #AEC7E8;     /* selected attribute / metric */
+    --select-soft: #E7EEF8;
+    --title: #35383A;
+    --text: #3C3F42;
+    --muted: #727477;
+    --rule: #EEEEEE;
+    --frame: #DDE2E6;
+    --grow: #2E9E3E;
+    --fall: #E53935;
+    --nav-bg: #FFFFFF;
   }
   * { box-sizing: border-box; }
+  html, body { margin: 0; }
   body {
-    margin: 0; background: var(--paper); color: var(--ink);
-    font-family: "Public Sans", "Segoe UI", Arial, sans-serif;
-    font-size: 17px; line-height: 1.55;
+    font-family: "Open Sans", "Segoe UI", Arial, sans-serif;
+    color: var(--text); background: #fff; font-size: 15px; line-height: 1.5;
   }
-  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
-  header { background: var(--navy); color: #fff; padding: 20px 0; }
-  header .wrap { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; }
-  .brand { font-weight: 700; letter-spacing: .01em; }
-  .brand span { font-weight: 400; opacity: .75; }
-  header a { color: #fff; opacity: .85; font-size: 15px; }
 
-  .hero { padding: 56px 0 32px; display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; align-items: center; }
-  h1 { font-size: clamp(32px, 4.4vw, 46px); line-height: 1.1; margin: 0 0 18px; color: var(--navy); font-weight: 700; letter-spacing: -.015em; }
-  .lede { font-size: 19px; color: var(--muted); margin: 0 0 24px; max-width: 34em; }
-  .how { font-size: 15px; color: var(--muted); margin: 0; }
-  .how strong { color: var(--ink); }
-
-  /* The three lanes */
-  .lanes { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 22px 24px; }
-  .lanes h2 { font-size: 15px; font-weight: 600; margin: 0 0 4px; color: var(--ink); }
-  .lanes p.sub { font-size: 14px; color: var(--muted); margin: 0 0 18px; }
-  .lane { display: grid; grid-template-columns: 92px 1fr 64px; align-items: center; gap: 12px; margin-bottom: 12px; }
-  .lane .name { font-size: 14px; font-weight: 600; }
-  .bar { height: 14px; background: #EEF2F4; border-radius: 7px; overflow: hidden; }
-  .bar i { display: block; height: 100%; border-radius: 7px; width: 0; transition: width .9s cubic-bezier(.2,.7,.2,1); }
-  .lane .val { text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--grow); }
-  .gap { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line); font-size: 14px; color: var(--muted); }
-  .gap b { color: var(--ink); }
-  @media (prefers-reduced-motion: reduce) { .bar i { transition: none; } }
-
-  section.block { padding: 36px 0; border-top: 1px solid var(--line); }
-  section.block h2 { font-size: 24px; color: var(--navy); margin: 0 0 8px; }
-  section.block > .wrap > p { color: var(--muted); margin: 0 0 22px; max-width: 40em; }
-
-  .questions { display: flex; flex-wrap: wrap; gap: 10px; }
-  .q {
-    font: inherit; font-size: 15px; text-align: left; cursor: pointer;
-    background: #fff; color: var(--ink); border: 1px solid var(--line);
-    border-radius: 20px; padding: 9px 16px;
+  /* Library top bar */
+  .topbar {
+    height: 32px; border-bottom: 1px solid var(--frame);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; color: var(--title); position: relative;
   }
-  .q:hover { border-color: var(--cohort); }
-  .q:focus-visible, a:focus-visible { outline: 3px solid var(--cohort); outline-offset: 2px; }
-  .q.copied { border-color: var(--grow); color: var(--grow); }
+  .topbar .dot { position: absolute; left: 8px; width: 20px; height: 20px; border-radius: 50%; background: var(--bar); }
 
-  .rules { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0 40px; margin: 0; padding: 0; list-style: none; }
-  .rules li { padding: 14px 0; border-bottom: 1px solid var(--line); }
-  .rules b { display: block; color: var(--navy); margin-bottom: 2px; }
-  .rules span { color: var(--muted); font-size: 15px; }
+  .shell { display: grid; grid-template-columns: 208px 1fr; min-height: calc(100vh - 32px); }
 
-  .contacts { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-  .contacts div { font-size: 15px; }
-  .contacts b { display: block; color: var(--navy); }
-  .contacts a { color: var(--cohort); }
+  /* Left table of contents */
+  nav.toc { border-right: 1px solid var(--frame); padding: 10px 0; font-size: 13px; }
+  .toc .dossier { padding: 0 12px 8px; color: var(--title); }
+  .toc .logo { display: block; margin: 4px 12px 14px; width: 86px; height: 50px; }
+  .toc hr { border: 0; border-top: 1px solid var(--frame); margin: 0 12px 10px; }
+  .toc .chapter { padding: 6px 12px 2px; color: var(--title); }
+  .toc a { display: block; padding: 5px 12px 5px 26px; color: var(--title); text-decoration: none; position: relative; }
+  .toc a:hover { background: var(--select-soft); }
+  .toc a.on::before { content: ""; position: absolute; left: 13px; top: 50%; width: 6px; height: 6px; margin-top: -3px; border-radius: 50%; background: var(--bar); }
 
-  footer { padding: 28px 0 120px; font-size: 13px; color: var(--muted); }
+  /* Filter strip */
+  .filters { font-size: 12px; padding: 8px 16px; border-bottom: 1px solid var(--rule); color: var(--title); }
+  .filters b { font-weight: 700; }
+  .filters span { color: var(--muted); }
 
-  @media (max-width: 820px) {
-    .hero { grid-template-columns: 1fr; gap: 32px; padding-top: 36px; }
+  main { padding: 0 16px 120px; min-width: 0; }
+  h1 { font-weight: 400; font-size: clamp(22px, 2.6vw, 30px); color: var(--title); margin: 30px 8px 30px; letter-spacing: .005em; }
+
+  .shell > div, .layout > * { min-width: 0; }
+  .layout { display: grid; grid-template-columns: 262px 1fr; gap: 14px; align-items: start; }
+
+  .panel { margin-bottom: 18px; }
+  .panel > h2 {
+    margin: 0; background: var(--bar); color: #fff; font-size: 14px; font-weight: 700;
+    padding: 6px 10px; text-align: center;
+  }
+  .panel.wide > h2 { text-align: left; }
+  .panel .body { padding: 10px 8px; }
+
+  /* Attribute/metric-style lists */
+  .list { list-style: none; margin: 0; padding: 0; }
+  .list li { text-align: center; font-size: 13px; }
+  .list button, .list a {
+    width: 100%; display: block; font: inherit; color: var(--title); background: none; border: 0;
+    padding: 5px 6px; cursor: pointer; text-decoration: none;
+  }
+  .list button:hover, .list a:hover { background: var(--select-soft); }
+  .list .sel { background: var(--select); color: #fff; font-weight: 600; }
+  .list .copied { background: var(--select); color: #fff; }
+  .hint { font-size: 12px; color: var(--muted); text-align: center; margin: 8px 4px 0; }
+
+  /* Grid report styling */
+  .scroll { overflow-x: auto; }
+  table.grid { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 640px; }
+  .grid th { font-weight: 600; font-size: 12px; color: var(--title); text-align: right; padding: 6px 10px; border-bottom: 1px solid #999; white-space: nowrap; }
+  .grid th:first-child, .grid th:nth-child(2), .grid td:first-child, .grid td:nth-child(2) { text-align: left; }
+  .grid td { padding: 7px 10px; border-bottom: 1px solid var(--rule); text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .up { color: var(--grow); }
+  .down { color: var(--fall); }
+
+  .reading { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-top: 1px solid var(--rule); margin-top: 6px; }
+  .reading div { padding: 12px 12px; border-right: 1px solid var(--rule); font-size: 13px; }
+  .reading div:last-child { border-right: 0; }
+  .reading b { display: block; font-size: 22px; font-weight: 300; color: var(--title); }
+  .reading small { display: block; margin-top: 4px; color: var(--muted); }
+
+  .intro { font-size: 15px; padding: 4px 4px 0; }
+  .intro p { margin: 0 0 10px; }
+  .assist-cta { display: flex; gap: 12px; align-items: center; background: var(--select-soft); padding: 12px 14px; font-size: 14px; }
+  .assist-cta .ic { flex: none; width: 34px; height: 34px; border-radius: 50%; background: var(--bar); color: #fff; display: grid; place-items: center; font-weight: 700; }
+
+  .rules { display: grid; grid-template-columns: 1fr 1fr; }
+  .rules div { padding: 12px 12px; border-bottom: 1px solid var(--rule); font-size: 13px; }
+  .rules div:nth-child(odd) { border-right: 1px solid var(--rule); }
+  .rules b { display: block; color: var(--title); font-size: 14px; }
+
+  .contacts { display: grid; grid-template-columns: 1fr 1fr; font-size: 13px; }
+  .contacts div { padding: 10px 12px; }
+  .contacts b { display: block; color: var(--title); }
+  .contacts a { color: var(--bar); }
+
+  .note { font-size: 12px; color: var(--muted); padding: 6px 8px; }
+  button:focus-visible, a:focus-visible { outline: 2px solid var(--bar); outline-offset: 1px; }
+
+  @media (max-width: 900px) {
+    .shell { grid-template-columns: 1fr; }
+    nav.toc { border-right: 0; border-bottom: 1px solid var(--frame); display: flex; flex-wrap: wrap; align-items: center; padding: 6px 4px; }
+    .toc .dossier, .toc hr, .toc .chapter { display: none; }
+    .toc .logo { margin: 2px 8px; width: 60px; height: 35px; }
+    .toc a { padding: 5px 10px; }
+    .toc a.on::before { display: none; }
+    .toc a.on { background: var(--select); color: #fff; }
+    .layout { grid-template-columns: 1fr; }
     .rules, .contacts { grid-template-columns: 1fr; }
+    .rules div:nth-child(odd) { border-right: 0; }
+    .reading { grid-template-columns: 1fr; }
+    .reading div { border-right: 0; border-bottom: 1px solid var(--rule); }
   }
 </style>
 </head>
 <body>
-<header>
-  <div class="wrap">
-    <div class="brand">NostraData <span>API Reporting Suite</span></div>
+<div class="topbar"><span class="dot" aria-hidden="true"></span>API - Comparison Dynamics | Help</div>
+
+<div class="shell">
+  <nav class="toc" aria-label="Contents">
+    <div class="dossier">API - Comparison Dynamics</div>
+    <img class="logo" alt="API Comparison Dynamics" src="data:image/png;base64,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">
+    <hr>
+    <div class="chapter">Help</div>
+    <a href="#assistant" class="on">Ask the Assistant</a>
+    <a href="#reading">Reading the Grid</a>
+    <a href="#rules">Before You Compare</a>
     <a href="#contacts">Contacts</a>
-  </div>
-</header>
+  </nav>
 
-<main>
-  <div class="wrap hero">
-    <div>
-      <h1>Questions about Comparison Dynamics? Ask the assistant.</h1>
-      <p class="lede">It knows the full user guide: every metric, filter, default view and calendar rule in both the Month / Quarter / Year and Weekly chapters.</p>
-      <p class="how"><strong>Talk or type.</strong> Open the assistant in the bottom-right corner, then speak your question or switch to text chat.</p>
-    </div>
+  <div>
+    <div class="filters"><b>HELP</b> &nbsp;|&nbsp; Covers <b>Month / Quarter / Year</b> and <b>Weekly</b> chapters <span>&nbsp;·&nbsp; answers come from the Comparison Dynamics user guide</span></div>
 
-    <div class="lanes" aria-label="Example: reading a store against its benchmarks">
-      <h2>Every % Diff compares a tier with itself</h2>
-      <p class="sub">Sample store, Aug-26 Scripts vs same month last year</p>
-      <div class="lane"><span class="name" style="color:var(--store)">Store</span><div class="bar"><i data-w="91" style="background:var(--store)"></i></div><span class="val">+9.1%</span></div>
-      <div class="lane"><span class="name" style="color:var(--cohort)">Cohort</span><div class="bar"><i data-w="69" style="background:var(--cohort)"></i></div><span class="val">+6.9%</span></div>
-      <div class="lane"><span class="name" style="color:var(--nat)">National</span><div class="bar"><i data-w="40" style="background:var(--nat)"></i></div><span class="val">+4.0%</span></div>
-      <p class="gap">Read across the three: the store beat its brick by <b>2.2 points</b> and the national market by <b>5.1 points</b>.</p>
-    </div>
-  </div>
+    <main>
+      <h1>COMPARISON DYNAMICS - Help</h1>
 
-  <section class="block">
-    <div class="wrap">
-      <h2>Not sure where to start?</h2>
-      <p>Common questions people ask. Click one to copy it, then paste it into the assistant's text chat.</p>
-      <div class="questions">
-        <button class="q">Is NAT Diff % the store compared with National?</button>
-        <button class="q">Why does the Weekly chapter open on Week Rank 2?</button>
-        <button class="q">Why doesn't the report include yesterday?</button>
-        <button class="q">Can I read Cohort Diff % for a whole banner?</button>
-        <button class="q">Why is Cohort Diff % blank for a store?</button>
-        <button class="q">What's the difference between SWLY and LW?</button>
-        <button class="q">Why did my week totals double?</button>
-        <button class="q">How do I export to Excel?</button>
-        <button class="q">Why did a past week's figures change?</button>
+      <div class="layout">
+        <!-- Left column: question list styled like the Attributes / Metrics panels -->
+        <aside>
+          <div class="panel" id="assistant">
+            <h2>Ask the Assistant</h2>
+            <div class="body intro">
+              <p>Open the assistant in the bottom-right corner, then speak your question or switch to text chat.</p>
+            </div>
+          </div>
+
+          <div class="panel">
+            <h2>Common Questions</h2>
+            <div class="body">
+              <ul class="list" id="questions">
+                <li><button>Is NAT Diff % the store compared with National?</button></li>
+                <li><button>Why does Weekly open on Week Rank 2?</button></li>
+                <li><button>Why doesn't the report include yesterday?</button></li>
+                <li><button>Can I read Cohort Diff % for a whole banner?</button></li>
+                <li><button>Why is Cohort Diff % blank for a store?</button></li>
+                <li><button>Why is Store % Diff blank or very large?</button></li>
+                <li><button>What's the difference between SWLY and LW?</button></li>
+                <li><button>Why did my week totals double?</button></li>
+                <li><button>How do I export to Excel?</button></li>
+                <li><button>Why did a past week's figures change?</button></li>
+              </ul>
+              <p class="hint">Click a question to copy it, then paste it into the assistant's text chat.</p>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Right column: grid-style panels -->
+        <section>
+          <div class="panel wide" id="reading">
+            <h2>Reading the Grid - Every % Diff Compares a Tier With Itself</h2>
+            <div class="body">
+              <div class="scroll">
+                <table class="grid">
+                  <thead>
+                    <tr><th>Month</th><th>Store</th><th>Scripts</th><th>Scripts LY</th><th>Scripts Store Diff %</th><th>Scripts NAT Diff %</th><th>Scripts Cohort Diff %</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>Aug-26</td><td>Sample store</td><td>5,039</td><td>4,620</td><td class="up">9.07%</td><td class="up">4.00%</td><td class="up">6.90%</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="reading">
+                <div><b>Store vs Store</b>This month against the same store in Aug-25. <small>Store % Diff</small></div>
+                <div><b>Cohort vs Cohort</b>The store's brick against itself, store excluded. <small>Single store only</small></div>
+                <div><b>National vs National</b>The same figure for every store in the period. <small>Not the store vs National</small></div>
+              </div>
+              <p class="note">Read across the row: the store beat its brick by 2.2 points and the national market by 5.1 points. Illustrative figures from the user guide.</p>
+            </div>
+          </div>
+
+          <div class="panel wide" id="rules">
+            <h2>Before You Compare</h2>
+            <div class="rules">
+              <div><b>Data runs to the day before yesterday</b>Opened on Thursday, the report holds dispensing up to and including Tuesday, so late pharmacies can land first.</div>
+              <div><b>Defaults show settled periods</b>Weekly opens on Week Rank No 2, the last completed week. Month / Quarter / Year opens on the last 12 completed months.</div>
+              <div><b>Cohort Diff % needs Store on the grid</b>Each store has its own brick. Rolled up across stores, overlapping bricks stop describing a real market.</div>
+              <div><b>National and Cohort are growth only</b>Their raw totals are never shown, and there is no Cohort Margin comparison at all.</div>
+            </div>
+          </div>
+
+          <div class="panel wide" id="contacts">
+            <h2>Contacts</h2>
+            <div class="contacts">
+              <div><b>Questions about the report or its numbers</b><a href="mailto:quality@nostradata.com.au">quality@nostradata.com.au</a><br>Quote the store, chapter, period and metric.</div>
+              <div><b>A store's data has stopped arriving</b><a href="mailto:support@nostradata.com.au">support@nostradata.com.au</a> or <a href="tel:1300466787">1300 466 787</a></div>
+            </div>
+          </div>
+        </section>
       </div>
-    </div>
-  </section>
-
-  <section class="block">
-    <div class="wrap">
-      <h2>Four things to know before you compare</h2>
-      <p>The points that trip people up most often.</p>
-      <ul class="rules">
-        <li><b>Data runs to the day before yesterday</b><span>Opened on Thursday, the report holds dispensing up to and including Tuesday, so late pharmacies can land first.</span></li>
-        <li><b>Defaults show settled periods</b><span>Weekly opens on Week Rank No 2, the last completed week. Month / Quarter / Year opens on the last 12 completed months.</span></li>
-        <li><b>Cohort Diff % needs Store on the grid</b><span>Each store has its own brick. Rolled up across stores, overlapping bricks stop describing a real market.</span></li>
-        <li><b>National and Cohort are growth only</b><span>Their raw totals are never shown, and there is no Cohort Margin comparison at all.</span></li>
-      </ul>
-    </div>
-  </section>
-
-  <section class="block" id="contacts">
-    <div class="wrap">
-      <h2>Still stuck?</h2>
-      <p>The assistant answers from the user guide only. For anything it can't answer, contact NostraData.</p>
-      <div class="contacts">
-        <div><b>Questions about the report or its numbers</b><a href="mailto:quality@nostradata.com.au">quality@nostradata.com.au</a><br>Quote the store, chapter, period and metric.</div>
-        <div><b>A store's data has stopped arriving</b><a href="mailto:support@nostradata.com.au">support@nostradata.com.au</a> or <a href="tel:1300466787">1300 466 787</a></div>
-      </div>
-    </div>
-  </section>
-</main>
-
-<footer>
-  <div class="wrap">API - Comparison Dynamics help. The assistant's answers come from the Comparison Dynamics user guide and can't see live report data. For corporate users only.</div>
-</footer>
+    </main>
+  </div>
+</div>
 
 <elevenlabs-convai agent-id="agent_5801m44vc31he5w99znyhymsx0nm"></elevenlabs-convai>
 <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
 
 <script>
-  // Animate the lane bars once on load
-  requestAnimationFrame(() => {
-    document.querySelectorAll('.bar i').forEach(el => { el.style.width = el.dataset.w + '%'; });
-  });
-  // Copy example questions to the clipboard
-  document.querySelectorAll('.q').forEach(btn => {
+  // Copy a question to the clipboard
+  document.querySelectorAll('#questions button').forEach(btn => {
     btn.addEventListener('click', async () => {
       try {
         await navigator.clipboard.writeText(btn.textContent);
         const original = btn.textContent;
         btn.classList.add('copied'); btn.textContent = 'Copied';
         setTimeout(() => { btn.classList.remove('copied'); btn.textContent = original; }, 1200);
-      } catch (e) { /* clipboard unavailable: question stays visible to type */ }
+      } catch (e) { /* clipboard unavailable */ }
     });
   });
+  // Highlight the current section in the contents panel
+  const links = [...document.querySelectorAll('.toc a')];
+  links.forEach(a => a.addEventListener('click', () => {
+    links.forEach(l => l.classList.remove('on')); a.classList.add('on');
+  }));
 </script>
 </body>
 </html>
